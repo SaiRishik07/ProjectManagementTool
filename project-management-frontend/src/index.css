@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  ---------------------------------
+  Global Styles & Custom Utilities
+  ---------------------------------
+*/
+
+/* Reset browser defaults */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: #1b0404;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Responsive root font sizing for better readability on all screens */
+  font-size: clamp(14px, 1.6vw, 16px);
+}
+
+/* Custom Animation for Cyber Background */
+@keyframes cyber-grid {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.cyber-background {
+  background:
+    /* A darker, more transparent overlay to make the grid pop */
+    linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+    /* The grid lines are now a brighter, vibrant blue */
+    repeating-linear-gradient(0deg, #00C0FF, #00C0FF 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(90deg, #00C0FF, #00C0FF 1px, transparent 1px, transparent 40px);
+  background-size: 40px 40px;
+  animation: cyber-grid 60s linear infinite;
+  background-color: #0A0B1A;
+}
+
+/*
+  ---------------------------------
+  (Optional) Other custom styles
+  ---------------------------------
+*/
+
+/* Example: Custom utility for glowing text */
+.text-glow-sm {
+  text-shadow: 0 0 5px rgba(0, 192, 255, 0.5);
+}
+
+/* Add any other custom styles you might have here */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.4s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+html, body, main {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* bounce/inertia */
+}
+
+/* Prevent horizontal scroll and ensure content fits viewport on mobile */
+body, #root {
+  overflow-x: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.3) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.4);
+  border-radius: 4px;
+}

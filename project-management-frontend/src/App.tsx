@@ -1,0 +1,142 @@
+import './App.css';
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useAuthStore } from "./store/authStore";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RegisterCompany from './pages/RegisterCompany';
+import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
+import Teams from "./pages/Teams";
+import Sidebar from "./components/Sidebar";
+import Topbar from "./components/Topbar";
+import './index.css'
+import Members from './pages/Members';
+import Projects from './pages/Projects';
+import ProjectDetails from './pages/ProjectDetails';
+import { Analytics } from "@vercel/analytics/react";
+import Tasks from './pages/Task';
+import TaskDetails from './pages/TaskDetails';
+import TeamDetails from './pages/TeamDetails';
+import ProfilePage from './pages/Profile';
+import NotFound from "./pages/NotFound"; 
+import { useWebSocket } from "./hooks/useWebSocket";
+import { useNotificationStore } from "./store/notificationStore";
+import { useCallback, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MemberDetails from "./pages/MemberDetails/MemberDetails";
+
+function App() {
+  const isAuthenticated = useAuthStore((state) => state.token);
+  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const hideLayout = location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/register-company";
+
+  return (
+    <div className="flex min-h-screen bg-background-dark text-text-base overflow-x-hidden">
+      {isAuthenticated && !hideLayout && (
+        <Sidebar open={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      )}
+
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {isAuthenticated && !hideLayout && (
+          <Topbar onMenuClick={() => setIsSidebarOpen(true)} />
+        )}
+
+        <main className="flex-1 overflow-y-auto scroll-smooth bg-background-content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/register-company" element={<RegisterCompany/>} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teams"
+              element={
+                <ProtectedRoute>
+                  <Teams />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/members" 
+              element={<Members />} 
+            />
+            <Route
+              path="/members/:id"
+              element={
+                <ProtectedRoute>
+                  <MemberDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <ProtectedRoute>
+                  <Projects />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/projects/:id"
+              element={
+                <ProtectedRoute>
+                  <ProjectDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <ProtectedRoute>
+                  <Tasks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tasks/:id"
+              element={
+                <ProtectedRoute>
+                  <TaskDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teams/:id"
+              element={
+                <ProtectedRoute>
+                  <TeamDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* 404 Route - MUST BE LAST */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+
+          <Analytics />
+          
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export default App;
